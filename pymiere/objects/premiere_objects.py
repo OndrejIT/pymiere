@@ -424,15 +424,14 @@ class Project(PymiereBaseObject):
         self._check_type(importAsNumberedStills, bool, 'arg "importAsNumberedStills" of function "Project.importFiles"')
         return self._eval_on_this_object("importFiles({}, {}, {}, {})".format(_format_object_to_es(arrayOfFilePathsToImport), _format_object_to_es(suppressUI), _format_object_to_es(targetBin), _format_object_to_es(importAsNumberedStills)))
 
-    def importSequences(self, arg1):
+    def importSequences(self, projectPath, sequences):
         """
         Imports sequences from a project. 
         :param projectPath: Path to project from which to import sequences.
         :param sequences: An array of sequence IDs to import, from the project.
-        :type arg1: any
         """
-        self._check_type(arg1, any, 'arg "arg1" of function "Project.importSequences"')
-        return self._eval_on_this_object("importSequences({})".format(_format_object_to_es(arg1)))
+        # self._check_type(arg1, any, 'arg "arg1" of function "Project.importSequences"')
+        return self._eval_on_this_object("importSequences({})".format(_format_object_to_es(projectPath), _format_object_to_es(sequences)))
 
     def importAllAEComps(self, pathOfContainingProject, optionalTargetBin):
         """
