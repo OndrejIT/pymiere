@@ -6,7 +6,7 @@ import sys
 import json
 from time import time as current_time
 import requests
-from pymiere.exe_utils import exe_is_running
+import platform
 
 # ----- GLOBALS -----
 PANEL_URL = "http://127.0.0.1:3000"  # Pymiere link local URL
@@ -25,14 +25,17 @@ def check_premiere_is_alive(crash=True):
     global last_alive_check_time
     if "last_alive_check_time" in globals() and current_time() - last_alive_check_time < ALIVE_TIMEOUT:
         return True
-    # is premiere pro launched
-    running, pid = exe_is_running("adobe premiere pro.exe")
-    if not running:
-        msg = "Premiere Pro is not running"
-        if crash:
-            raise ValueError(msg)
-        print(msg)
-        return False
+    if platform.system() == "Windows":
+        # only check via exe_utils on windows, not yet compqtible with macOS
+        from pymiere.exe_utils import exe_is_running
+        # is premiere pro launched
+        running, pid = exe_is_running("adobe premiere pro.exe")
+        if not running:
+            msg = "Premiere Pro is not running"
+            if crash:
+                raise ValueError(msg)
+            print(msg)
+            return False
     # is the CEP panel reachable
     try:
         response = requests.get(PANEL_URL)
